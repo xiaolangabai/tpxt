@@ -14,7 +14,7 @@ public class AccessToenUtil {
     public static String getAccessToken(){
         Map<String, String> map = new HashMap<>();
         map.put("hospitalId", "107");
-        JSONObject jsonObject = HttpUtil.sendPost("http://his.mobimedical.cn/index.php?g=Notify&m=FrontServerZL&a=getBDaccesstoken", map);
+        JSONObject jsonObject = HttpUtil.sendPost("不透露连接信息", map);
         return jsonObject.getString("accesstoken");
     }
 
