@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tpxt.dao.ContentDao">
+
+    <resultMap id="ContentResult" type="Content">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="ticket" column="ticket"/>
+        <result property="createTime" column="createTime"/>
+        <result property="updateTime" column="updateTime"/>
+    </resultMap>
+
+    <select id="listAll" resultMap="ContentResult">
+        select * from content
+    </select>
+
+    <select id="listByCondition" parameterType="Map" resultMap="ContentResult">
+        select * from content WHERE checked = 1
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="getContentById" parameterType="Integer" resultMap="ContentResult">
+        select * from content where id = #{contentId} AND checked = 1
+    </select>
+
+    <select id="getContentByName" parameterType="String" resultMap="ContentResult">
+        select * from content where name = #{name} AND checked = 1
+    </select>
+
+    <update id="updateContent" parameterType="Content">
+        update content set ticket = #{ticket} where id = #{id}
+    </update>
+
+    <select id="rank" resultMap="ContentResult">
+        select * from content order by ticket DESC
+    </select>
+
+    <update id="updateChecked" parameterType="Content">
+        update content set checked = #{checked} where id = #{id}
+    </update>
+
+    <!--后台管理页面所有sql-->
+    <select id="getContentAll" parameterType="Map" resultMap="ContentResult">
+        select * from content
+        <where>
+            <if test="checked!=null and checked !='' ">
+              checked = #{checked}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <!--后台管理页面所有sql改（上面的方法改为其他地方用，这里增加数据是否有效）-->
+    <select id="listByStatus" parameterType="Map" resultMap="ContentResult">
+        select * from content
+        <where>
+            <if test="status!=null and status!=''">
+                and status = #{status}
+            </if>
+            <if test="checked!=null and checked !='' ">
+                and checked = #{checked}
+            </if>
+        </where>
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <update id="delContent" parameterType="Map">
+        update content set status = 0 where id = #{id}
+    </update>
+</mapper>

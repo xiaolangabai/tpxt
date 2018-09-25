@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tpxt.dao.OtherInfoDao">
+
+    <select id="enrollNum" resultType="Integer">
+        select count(0) from content
+    </select>
+
+    <select id="enrollNumCondition" parameterType="Map" resultType="Integer">
+        select count(0) from content
+        <where>
+            <if test="checked!=null and checked != ''">
+                and checked = #{checked}
+            </if>
+            <if test="status!=null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    
+    <select id="sumTicket" resultType="Integer">
+        select IFNULL(SUM(ticket),0) AS sumCount from content
+    </select>
+
+    <select id="endTime" resultType="Long">
+        select endTime from timerecord
+    </select>
+
+    <select id="viewCount" resultType="Long">
+        select viewCount from timerecord
+    </select>
+
+    <update id="updateViewCount" parameterType="Long" >
+        update timerecord set viewCount = #{count}
+    </update>
+</mapper>
